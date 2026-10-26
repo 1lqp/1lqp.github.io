@@ -1,45 +1,25 @@
-# [Project name]
+# NovaKeys Digital Store
 
-_Replace the heading above with the project's name, and this line with one sentence describing what this app does for users._
+A multilingual storefront for Algerian customers to browse and order digital subscriptions using manual payment methods.
 
 ## Run & Operate
 
-- `pnpm --filter @workspace/api-server run dev` — run the API server (port 5000)
-- `pnpm run typecheck` — full typecheck across all packages
-- `pnpm run build` — typecheck + build all packages
-- `pnpm --filter @workspace/api-spec run codegen` — regenerate API hooks and Zod schemas from the OpenAPI spec
-- `pnpm --filter @workspace/db run push` — push DB schema changes (dev only)
-- Required env: `DATABASE_URL` — Postgres connection string
-
-## Stack
-
-- pnpm workspaces, Node.js 24, TypeScript 5.9
-- API: Express 5
-- DB: PostgreSQL + Drizzle ORM
-- Validation: Zod (`zod/v4`), `drizzle-zod`
-- API codegen: Orval (from OpenAPI spec)
-- Build: esbuild (CJS bundle)
+- `pnpm --filter @workspace/novakeys-store run dev` — run the storefront
+- `pnpm --filter @workspace/novakeys-store run typecheck` — type-check the web artifact
+- `PORT=20077 BASE_PATH=/ pnpm --filter @workspace/novakeys-store run build` — build outside the managed workflow
 
 ## Where things live
 
-_Populate as you build — short repo map plus pointers to the source-of-truth file for DB schema, API contracts, theme files, etc._
+- `artifacts/novakeys-store/public/site/` — imported storefront bundle, logo, favicon, and responsive style overrides
+- `artifacts/novakeys-store/scripts/patch-store-bundle.mjs` — repeatable fee and order-confirmation text updates
+- `artifacts/novakeys-store/vite.config.ts` — serves the imported SPA through the artifact preview
 
 ## Architecture decisions
 
-_Populate as you build — non-obvious choices a reader couldn't infer from the code (3-5 bullets)._
+- The supplied NovaKeys ZIP contained a production bundle, not the original editable application source.
+- Preserve the existing EasySite SDK and remote `orders/orders:createOrder` flow; do not replace the order store or payment backend without explicit approval.
+- The Flexy fee is updated in the client bundle. The remote order processor source was not included, so its saved-order fee and total cannot be confirmed or changed here.
 
 ## Product
 
-_Describe the high-level user-facing capabilities of this app once they exist._
-
-## User preferences
-
-_Populate as you build — explicit user instructions worth remembering across sessions._
-
-## Gotchas
-
-_Populate as you build — sharp edges, "always run X before Y" rules._
-
-## Pointers
-
-- See the `pnpm-workspace` skill for workspace structure, TypeScript setup, and package details
+Customers can browse plans, submit subscription orders, choose manual payment methods, and send an order summary and payment proof through WhatsApp.
