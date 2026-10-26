@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://placeholder-internal.ezsite.ai/sitemap.xml
